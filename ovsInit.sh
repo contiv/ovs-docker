@@ -3,7 +3,8 @@
 
 set -euo pipefail
 
-if [[ $(lsmod | cut -d" " -f1 | grep -q openvswitch) -eq 1 ]]; then
+if ! lsmod | cut -d" " -f1 | grep -q openvswitch; then
+    echo "INFO: Load kernel module: openvswitch"
 	modprobe openvswitch
 	sleep 2
 fi
@@ -39,7 +40,7 @@ ovs-vswitchd -v --pidfile --detach --log-file=/var/log/contiv/ovs-vswitchd.log \
 VSWITCHD_PID=$!
 
 retry=0
-while [[ $(ovsdb-client list-dbs | grep -c Open_vSwitch) -eq 0 ]]; do
+while ! ovsdb-client list-dbs | grep -q Open_vSwitch; do
 	if [[ ${retry} -eq 5 ]]; then
 		echo "CRITICAL: Failed to start ovsdb in 5 seconds."
 		exit 1
