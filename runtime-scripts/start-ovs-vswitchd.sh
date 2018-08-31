@@ -37,7 +37,7 @@ while ! ovsdb-client list-dbs | grep -q Open_vSwitch; do
 done
 
 echo "INFO: Starting ovs-vswitchd"
-ovs-vswitchd -v --pidfile &
+ovs-vswitchd "${OVSVSWITCHD_EXTRA_FLAGS}" --pidfile &
 VSWITCHD_PID=$!
 
 sleep 2
