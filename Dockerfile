@@ -20,5 +20,6 @@ RUN mkdir -p /etc/openvswitch \
  && echo 'http://dl-cdn.alpinelinux.org/alpine/v3.4/main' >> /etc/apk/repositories \
  && apk --no-cache add \
       openvswitch=2.5.0-r0 ca-certificates bash
-
+ENV OVSVSWITCHD_EXTRA_FLAGS "-v"
+ENV OVSDBSERVER_EXTRA_FLAGS ""
 COPY runtime-scripts/ /scripts/
